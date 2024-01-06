@@ -1,5 +1,6 @@
 /* Advent of Code, Day 6: Wait For It
  * Adrien Abbey, Jan. 2024
+ * Part One Solution: 219849
  */
 
 import java.io.File;
@@ -9,7 +10,7 @@ import java.util.Scanner;
 
 class AoC2023Day6 {
     /* Global Variables */
-    public static String inputFileName = "example-input.txt";
+    public static String inputFileName = "input.txt";
     public static boolean testing = false;
 
     public static void main(String[] args) throws FileNotFoundException {
