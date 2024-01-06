@@ -1,6 +1,7 @@
 /* Advent of Code, Day 6: Wait For It
  * Adrien Abbey, Jan. 2024
  * Part One Solution: 219849
+ * Part Two Solution: 29432455
  */
 
 import java.io.File;
@@ -12,6 +13,7 @@ class AoC2023Day6 {
     /* Global Variables */
     public static String inputFileName = "input.txt";
     public static boolean testing = false;
+    public static boolean partTwo = true;
 
     public static void main(String[] args) throws FileNotFoundException {
         // Load the input into an array list of strings:
@@ -33,59 +35,93 @@ class AoC2023Day6 {
             }
         }
 
-        // Verify that the time and distance lists are the same length:
-        if (timeIntegers.size() != distanceIntegers.size()) {
-            // Something went wrong. Complain loudly and exit:
-            System.err.println("Invalid input!");
-            System.err.println("Found " + timeIntegers.size() + " time integers and " + distanceIntegers.size()
-                    + " distance integers.");
-            System.exit(1);
-        }
+        // Track the final score:
+        int finalScore = 0;
 
-        // Track the number of ways to win for each pair of numbers:
-        ArrayList<Integer> totalWins = new ArrayList<>();
-
-        // Calculate the number of ways to win each race:
-        for (int i = 0; i < timeIntegers.size(); i++) {
-            // For each time given, calculate the distance traveled for every
-            // possible value. If that number surpasses the distance given,
-            // increment the number of possible wins.
-
-            // Track the number of possible wins for this race:
-            int raceWins = 0;
-
-            // For every possible (integer) length of time:
-            for (int j = 0; j <= timeIntegers.get(i); j++) {
-                // The boat's speed starts at 0 mm/s, increasing by 1 mm/s for
-                // every ms. Find how far the boat travels for the remaining
-                // time. Then compare to see if that surpasses the previous
-                // score.
-
-                // Calculate the boat's speed and remaining time:
-                int speed = j * 1;
-                int remainingTime = timeIntegers.get(i) - j;
-
-                // Calculate the distance it travels:
-                int distance = speed * remainingTime;
-
-                // If this distance is greater than the goal, incremement the
-                // possible win counter:
-                if (distance > distanceIntegers.get(i)) {
-                    raceWins += 1;
-                }
+        // For Part One:
+        if (!partTwo) {
+            // Verify that the time and distance lists are the same length:
+            if (timeIntegers.size() != distanceIntegers.size()) {
+                // Something went wrong. Complain loudly and exit:
+                System.err.println("Invalid input!");
+                System.err.println("Found " + timeIntegers.size() + " time integers and " + distanceIntegers.size()
+                        + " distance integers.");
+                System.exit(1);
             }
 
-            // Record this value for later:
-            totalWins.add(raceWins);
-        }
+            // Track the number of ways to win for each pair of numbers:
+            ArrayList<Integer> totalWins = new ArrayList<>();
 
-        // Calculate the final score:
-        int finalScore = 0;
-        for (int raceWins : totalWins) {
-            if (finalScore == 0 && raceWins > 0) {
-                finalScore = raceWins;
-            } else {
-                finalScore *= raceWins;
+            // Calculate the number of ways to win each race:
+            for (int i = 0; i < timeIntegers.size(); i++) {
+                // For each time given, calculate the distance traveled for every
+                // possible value. If that number surpasses the distance given,
+                // increment the number of possible wins.
+
+                // Track the number of possible wins for this race:
+                int raceWins = 0;
+
+                // For every possible (integer) length of time:
+                for (int j = 0; j <= timeIntegers.get(i); j++) {
+                    // The boat's speed starts at 0 mm/s, increasing by 1 mm/s for
+                    // every ms. Find how far the boat travels for the remaining
+                    // time. Then compare to see if that surpasses the previous
+                    // score.
+
+                    // Calculate the boat's speed and remaining time:
+                    int speed = j * 1;
+                    int remainingTime = timeIntegers.get(i) - j;
+
+                    // Calculate the distance it travels:
+                    int distance = speed * remainingTime;
+
+                    // If this distance is greater than the goal, incremement the
+                    // possible win counter:
+                    if (distance > distanceIntegers.get(i)) {
+                        raceWins += 1;
+                    }
+                }
+
+                // Record this value for later:
+                totalWins.add(raceWins);
+            }
+
+            // Calculate the final score:
+            for (int raceWins : totalWins) {
+                if (finalScore == 0 && raceWins > 0) {
+                    finalScore = raceWins;
+                } else {
+                    finalScore *= raceWins;
+                }
+            }
+        } else {
+            // Part Two code.
+
+            // Concactinate time and distance integers into a single integer:
+            String timeString = "";
+            String distanceString = "";
+            for (int time : timeIntegers) {
+                timeString = timeString + "" + time;
+            }
+            for (int distance : distanceIntegers) {
+                distanceString = distanceString + "" + distance;
+            }
+            Long totalTime = Long.parseLong(timeString);
+            Long totalDistance = Long.parseLong(distanceString);
+
+            // For each possible time value, calculate the distance:
+            for (Long i = (long) 0; i <= totalTime; i++) {
+                // Calculate the speed achieved:
+                Long speed = i * 1;
+
+                // Calculate the distance traveled:
+                Long timeRemaining = totalTime - i;
+                Long distance = speed * timeRemaining;
+
+                // Determine if this surpasses the goal distance:
+                if (distance > totalDistance) {
+                    finalScore += 1;
+                }
             }
         }
 
