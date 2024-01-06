@@ -1,6 +1,7 @@
 /* Advent of Code, Day 6: Wait For It
  * Adrien Abbey, Jan. 2024
  * Part One Solution: 219849
+ * Part Two Solution: 29432455
  */
 
 import java.io.File;
@@ -10,7 +11,7 @@ import java.util.Scanner;
 
 class AoC2023Day6 {
     /* Global Variables */
-    public static String inputFileName = "example-input.txt";
+    public static String inputFileName = "input.txt";
     public static boolean testing = false;
     public static boolean partTwo = true;
 
@@ -105,17 +106,17 @@ class AoC2023Day6 {
             for (int distance : distanceIntegers) {
                 distanceString = distanceString + "" + distance;
             }
-            int totalTime = Integer.parseInt(timeString);
-            int totalDistance = Integer.parseInt(distanceString);
+            Long totalTime = Long.parseLong(timeString);
+            Long totalDistance = Long.parseLong(distanceString);
 
             // For each possible time value, calculate the distance:
-            for (int i = 0; i <= totalTime; i++) {
+            for (Long i = (long) 0; i <= totalTime; i++) {
                 // Calculate the speed achieved:
-                int speed = i * 1;
+                Long speed = i * 1;
 
                 // Calculate the distance traveled:
-                int timeRemaining = totalTime - i;
-                int distance = speed * timeRemaining;
+                Long timeRemaining = totalTime - i;
+                Long distance = speed * timeRemaining;
 
                 // Determine if this surpasses the goal distance:
                 if (distance > totalDistance) {
